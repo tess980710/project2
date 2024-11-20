@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<form th:action="@{/write}" th:method="post">
+  <div>
+    <label for="title">제목</label>
+    <input type="text" name="title" id="title" required>
+  </div>
+  <div>
+    <label for="password">password</label>
+    <input type="text" name="password" id="password" required>
+  </div>
+  <div>
+    <label for="content">내용</label>
+    <input type="text" name="content" id="content" required>
+  </div>
+  <div>
+    <label for="storenum">가게번호</label>
+    <input type="text" name="storenum" id="storenum" required>
+  </div>
+
+  <div>
+    <button type="submit">저장</button>
+  </div>
+  <div>
+    <a th:href="@{/storelist}">돌아가기</a>
+  </div>
+
+</form>
+
+</body>
+</html>
