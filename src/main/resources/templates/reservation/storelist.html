@@ -2,30 +2,35 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Store List</title>
 </head>
 <body>
-    <table border="1">
-        <thead>
-        <tr>
-            <th>번호</th>
-            <th>가게이름</th>
-            <th>가게번호</th>
-            <th>작성일</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+<table border="1">
+    <thead>
+    <tr>
+        <th>번호</th>
+        <th>가게이름</th>
+        <th>가게번호</th>
+        <th>작성일</th>
+        <th>수정일</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="store : ${storeList}">
+        <td>
+        <a th:href="@{/store/detail/{id}(id=${store.id})}" th:text="${store.id}"></a></td>
+        <td th:text="${store.title}"></td>
+        <td th:text="${store.num}"></td>
+        <td th:text="${store.createdtime}"></td>
+        <td th:text="${store.updatedtime}"></td>
+    </tr>
+    </tbody>
+</table>
+<a th:href="@{/write}">식당 등록</a>
+</div>
 
-        </tbody>
-    </table>
 <div>
-    <a th:href="@{/write}">식당 등록</a>
+    <a th:href="@{/}">메인페이지</a>
 </div>
 </body>
 </html>

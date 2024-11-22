@@ -5,28 +5,35 @@
     <title>Title</title>
 </head>
 <body>
-<form action="post">
+<form th:action="@{/master/update}" method="post">
     <table border="1">
         <thead>
         <tr>
-            <th>role</th>
+            <th>권한</th>
             <th>관리자 아이디</th>
             <th>관리자 이름</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
+        <tr th:each="user : ${masterList}">
             <td>
-                <select>
+                <select name="role" id="role">
+                    <option value="3">관리자</option>
                     <option value="1">일반회원</option>
                     <option value="2">점주</option>
                 </select>
             </td>
-            <td></td>
-            <td></td>
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.name}"></td>
         </tr>
         </tbody>
     </table>
+    <div>
+        <button type="submit">권한 수정</button>
+    </div>
+    <div>
+        <a th:href="@{/}">메인페이지</a>
+    </div>
 </form>
 </body>
 </html>

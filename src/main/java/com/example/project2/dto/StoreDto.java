@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import java.time.LocalDate;
 
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 @Entity
 @Data
 @Table(name = "store")
-public class storeDto {
+public class StoreDto {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +22,6 @@ public class storeDto {
         private String title;
 
         private  String description;
-
         private  String photo;
 
         private  Integer num;

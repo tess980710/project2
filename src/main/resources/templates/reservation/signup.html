@@ -7,7 +7,7 @@
 <body>
 <form th:action="@{/signup}" th:method="post">
 <div>
-  <select>
+  <select name="role" id="role">
     <option value="1">일반회원</option>
     <option value="2">점주</option>
   </select>
@@ -15,25 +15,32 @@
   <div>
     <label for="id">Id</label>
     <input type="text" name="id" id="id" required>
+    <p th:text="${msg}"></p>
   </div>
   <div>
     <label for="password">password</label>
     <input type="text" name="password" id="password" required>
+    <p th:text="${msg2}"></p>
   </div>
   <div>
-    <label for="confirmpassword">password 확인</label>
-    <input type="text" name="confirmpassword" id="confirmpassword" required>
+    <label for="confirmPassword">password 확인</label>
+    <input type="text" name="confirmPassword" id="confirmPassword" required>
   </div>
   <div>
-    <label for="username"></label>
-    <input type="text" name="username" id="username" required>
+    <label for="name">name</label>
+    <input type="text" name="name" id="name" required>
   </div>
   <div>
     <label for="phonenum">phone</label>
-    <input type="phonenum" name="phonenum" id="phonenum">
+    <input type="phonenum" name="phonenum" id="phonenum" required>
+  </div>
+  <div>
+    <label for="email">email</label>
+    <input type="email" name="email" id="email" required>
   </div>
   <div>
     <button type="submit">회원등록</button>
+    <p th:text="${msg3}"></p>
   </div>
   <div>
     <a th:href="@{/login}">돌아가기</a>

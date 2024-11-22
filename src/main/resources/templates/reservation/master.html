@@ -5,25 +5,28 @@
   <title></title>
 </head>
 <body>
-<form th:action="@{/signup}" th:method="post">
-<div>
-  <input type="hidden" value="3">
-</div>
+<form th:action="@{/master}" th:method="post">
+  <div>
+    <input id="role" type="hidden" name="role" value="3">
+  </div>
   <div>
     <label for="id">Id</label>
     <input type="text" name="id" id="id" required>
+    <p th:text="${msg}"></p>
   </div>
   <div>
     <label for="password">password</label>
     <input type="text" name="password" id="password" required>
+
   </div>
   <div>
-    <label for="confirmpassword">password 확인</label>
-    <input type="text" name="confirmpassword" id="confirmpassword" required>
+    <label for="confirmPassword">password 확인</label>
+    <input type="text" name="confirmPassword" id="confirmPassword" required>
+    <p th:text="${msg2}"></p>
   </div>
   <div>
-    <label for="username"></label>
-    <input type="text" name="username" id="username" required>
+    <label for="name">관리자 이름</label>
+    <input type="text" name="name" id="name" required>
   </div>
 
   <div>

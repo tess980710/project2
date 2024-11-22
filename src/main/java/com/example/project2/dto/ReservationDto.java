@@ -13,11 +13,12 @@ import java.time.LocalDate;
 @Entity
 @Data
 @Table(name = "reservation")
-public class reservationDto {
+public class ReservationDto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
 
     private String name;
 

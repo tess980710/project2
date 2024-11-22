@@ -2,33 +2,52 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
   <meta charset="UTF-8">
-  <title></title>
+  <title>Store Detail</title>
 </head>
 <body>
-<form th:href="@{reservation}" method="post">
-  <div>
-    <label for="title">제목</label>
-    <input type="text" name="title" id="title">
-  </div>
-  <div>
-    <label for="photo">사진</label>
-    <input type="file" name="photo" id="photo">
-  </div>
+<table border="1">
+  <thead class="table-light">
+  <tr>
+    <th>Title</th>
+    <td th:text="${store.title}"></td>
+  </tr>
+  <tr>
+    <th>Description</th>
+    <td th:text="${store.description}"></td>
+  </tr>
+  <tr>
+    <th>Photo</th>
+    <td>
+      <img th:src="@{'/static/' + ${store.photo}}" alt="Store Photo" width="200">
+    </td>
 
-  <div>
-    <label for="description">내용</label>
-    <input type="description" name="description" id="description">
-  </div>
-  <div>
-    <button type="submit">예약하기</button>
-  </div>
-  <div>
-    <a th:href="@{/update}">수정하기</a>
-  </div>
-  <div>
-    <a th:href="@{/delete}">삭제</a>
-  </div>
-</form>
 
+
+  </tr>
+  </thead>
+</table>
+
+<div>
+  <a th:href="@{/reservation/{id}(id=${store.id})}">
+    <button>예약하기</button>
+  </a>
+
+
+  <a th:href="@{/modify/{id}(id=${store.id})}">
+    <button>수정하기</button>
+  </a>
+
+  <form th:action="@{/delete}" method="post">
+    <input type="hidden" th:value="${store.id}" name="id">
+
+    <button type="submit">삭제하기</button>
+  </form>
+</div>
+
+<div>
+  <a th:href="@{/storelist}">
+    <button>돌아가기</button>
+  </a>
+</div>
 </body>
 </html>

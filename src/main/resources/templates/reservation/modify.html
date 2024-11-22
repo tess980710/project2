@@ -2,30 +2,35 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>파일 업로드</title>
+  <title></title>
 </head>
-
 <body>
-<form th:action="@{/write}" method="post" enctype="multipart/form-data">
+<form th:action="@{/modify}" th:method="post">
   <div>
-    <label for="title"> 제목</label>
+    <label for="title">제목</label>
     <input type="text" name="title" id="title">
   </div>
   <div>
     <label for="file">사진</label>
     <input type="file" name="file" id="file">
   </div>
+
   <div>
     <label for="description">내용</label>
-    <input type="text" name="description" id="description">
+    <input type="description" name="description" id="description">
   </div>
   <div>
-    <label for="num">가게번호</label>
-    <input type="text" name="num" id="num">
+    <label for="phone">전화번호</label>
+    <input type="phone" name="phone" id="phone">
+  </div>
+
+  <div>
+    <button type="submit">수정하기</button>
   </div>
   <div>
-    <button type="submit">등록하기</button>
+    <a th:href="@{/storelist}">뒤로가기</a>
   </div>
 </form>
+
 </body>
 </html>

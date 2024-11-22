@@ -11,17 +11,18 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @Table(name = "user")
-public class userDto {
+public class UserDto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
-    private Integer password;
+    private String password;
 
     private String name;
 
-    private Integer phonenum;
+    private String phonenum;
+
+    private String email;
 
     private Integer role;
 }
