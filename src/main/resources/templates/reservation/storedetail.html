@@ -6,11 +6,13 @@
 </head>
 <body>
 <table border="1">
-  <thead class="table-light">
+  <thead>
   <tr>
     <th>Title</th>
     <td th:text="${store.title}"></td>
   </tr>
+  </thead>
+  <tbody>
   <tr>
     <th>Description</th>
     <td th:text="${store.description}"></td>
@@ -20,33 +22,28 @@
     <td>
       <img th:src="@{'/static/' + ${store.photo}}" alt="Store Photo" width="200">
     </td>
-
-
-
   </tr>
-  </thead>
+  </tbody>
 </table>
 
 <div>
   <a th:href="@{/reservation/{id}(id=${store.id})}">
-    <button>예약하기</button>
+    <button class="btn btn-primary">예약하기</button>
   </a>
 
-
   <a th:href="@{/modify/{id}(id=${store.id})}">
-    <button>수정하기</button>
+    <button class="btn btn-secondary">수정하기</button>
   </a>
 
   <form th:action="@{/delete}" method="post">
     <input type="hidden" th:value="${store.id}" name="id">
-
-    <button type="submit">삭제하기</button>
+    <button type="submit" class="btn btn-danger">삭제하기</button>
   </form>
 </div>
 
 <div>
   <a th:href="@{/storelist}">
-    <button>돌아가기</button>
+    <button class="btn btn-default">돌아가기</button>
   </a>
 </div>
 </body>

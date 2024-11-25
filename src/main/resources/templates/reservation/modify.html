@@ -2,28 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
   <meta charset="UTF-8">
-  <title></title>
+  <title>수정하기</title>
 </head>
 <body>
-<form th:action="@{/modify}" th:method="post">
+<form th:action="@{/modify}" th:method="post" enctype="multipart/form-data">
+  <input type="hidden" name="id" th:value="${store.id}">
+
   <div>
     <label for="title">제목</label>
-    <input type="text" name="title" id="title">
+    <input type="text" name="title" id="title" th:value="${store.title}">
   </div>
   <div>
     <label for="file">사진</label>
     <input type="file" name="file" id="file">
+    <input type="hidden" name="existingPhoto" th:value="${store.photo}">
   </div>
-
   <div>
     <label for="description">내용</label>
-    <input type="description" name="description" id="description">
+    <input type="text" name="description" id="description" th:value="${store.description}">
   </div>
   <div>
-    <label for="phone">전화번호</label>
-    <input type="phone" name="phone" id="phone">
+    <label for="num">전화번호</label>
+    <input type="text" name="num" id="num" th:value="${store.num}">
   </div>
-
   <div>
     <button type="submit">수정하기</button>
   </div>
@@ -31,6 +32,5 @@
     <a th:href="@{/storelist}">뒤로가기</a>
   </div>
 </form>
-
 </body>
 </html>

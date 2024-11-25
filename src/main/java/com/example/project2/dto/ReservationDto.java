@@ -19,10 +19,21 @@ public class ReservationDto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-
     private String name;
 
-    private LocalDate time;
+
+    private String date;
+
 
     private Integer phone;
+
+    @ManyToOne
+    @JoinColumn(name = "storeid")
+    private StoreDto store;
+
+
+    @ManyToOne
+    @JoinColumn(name = "userid")
+    private UserDto user;
+
 }

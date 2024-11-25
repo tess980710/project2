@@ -2,7 +2,7 @@ package com.example.project2.service;
 
 import com.example.project2.dto.StoreDto;
 import com.example.project2.dto.UserDto;
-import com.example.project2.repo.ReserRepo;
+import com.example.project2.repo.UserRepo;
 import com.example.project2.repo.StoreRepo;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -19,32 +19,32 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MasterService {
 
-    private final ReserRepo reserRepo;
+    private final UserRepo userRepo;
 
     private final StoreRepo storeRepo;
     private final HttpSession session;
 
     public String signUp(UserDto dto, String confirmPassword) {
-        if (reserRepo.existsById(dto.getId())) {
+        if (userRepo.existsById(dto.getId())) {
             return "1";
         }
         if (!dto.getPassword().equals(confirmPassword)) {
             return "2";
         } else {
-            reserRepo.save(dto);
+            userRepo.save(dto);
             return "3";
         }
     }
 
     public List<UserDto> MasterList(Integer role) {
-        return reserRepo.findByRole(role);
+        return userRepo.findByRole(role);
     }
 
     public void MasterModify(UserDto userDto) {
         UserDto dto = (UserDto) session.getAttribute("user");
 
         dto.setRole(userDto.getRole());
-        reserRepo.save(dto);
+        userRepo.save(dto);
     }
 
     public void write(StoreDto storeDto,MultipartFile file) {
@@ -53,7 +53,7 @@ public class MasterService {
 
         String filename = uuid + "_" + file.getOriginalFilename();
         File saveFile = new File(uploadDir, filename);
-//        String uniqueFile = UUID.randomUUID() + "_" + filename;
+        String uniqueFile = UUID.randomUUID() + "_" + filename;
 
 
         UserDto dto = (UserDto) session.getAttribute("user");
@@ -79,20 +79,13 @@ public class MasterService {
         storeRepo.save(storeDto);
     }
 
-    public void modify(StoreDto storeDto, MultipartFile file)  {
-        UserDto dto = (UserDto) session.getAttribute("user");
-
-
-        storeDto.setUpdatedtime(LocalDate.now());
-
-        storeDto.setUserid(dto.getId());
+    public void modify(StoreDto storeDto, MultipartFile file, String existingPhoto) {
+        String uploadDir = "C:\\practice\\project2\\src\\main\\resources\\static";
         UUID uuid = UUID.randomUUID();
 
-        if (storeDto.getPhoto() != null && !storeDto.getPhoto().isEmpty()) {
 
-            String uploadDir = "C:\\practice\\project2\\src\\main\\resources\\static";
-            String fullPath = uploadDir + "\\" + storeDto.getPhoto();
-
+        if (existingPhoto != null && !existingPhoto.isEmpty()) {
+            String fullPath = uploadDir + "\\" + existingPhoto;
             File oldFile = new File(fullPath);
 
             if (oldFile.exists()) {
@@ -100,14 +93,24 @@ public class MasterService {
             }
         }
 
-        if (file == null && file.isEmpty()) {
-            String uploadDir = "C:\\practice\\project2\\src\\main\\resources\\static";
-
+        if (file != null && !file.isEmpty()) {
             String filename = uuid + "_" + file.getOriginalFilename();
             File saveFile = new File(uploadDir, filename);
+
+            try {
+                file.transferTo(saveFile);
+                storeDto.setPhoto(filename);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
+        storeDto.setUpdatedtime(LocalDate.now());
+        UserDto dto = (UserDto) session.getAttribute("user");
+        storeDto.setUserid(dto.getId());
 
         storeRepo.save(storeDto);
     }
+
 }
 

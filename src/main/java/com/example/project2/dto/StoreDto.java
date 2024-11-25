@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.antlr.v4.runtime.misc.NotNull;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,4 +32,7 @@ public class StoreDto {
         private  LocalDate updatedtime;
 
         private  String userid;
+
+        @OneToMany(mappedBy = "store")
+        private List<ReservationDto> reservations;
 }
