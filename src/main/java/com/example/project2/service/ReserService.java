@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -115,11 +116,50 @@ public class ReserService {
         reservation.setPhone(Integer.valueOf(user.getPhonenum()));
 
         reserRepo.save(reservation);
+
+    }
+
+    public List<ReservationDto> getReserList(HttpSession session) {
+        UserDto user = (UserDto) session.getAttribute("user");
+
+        if (user == null) {
+
+            return new ArrayList<>();
+        }
+
+
+        Integer role = user.getRole() != null ? user.getRole() : 0;
+
+        if (role == 3) {
+            return reserRepo.findAll();
+        } else if (role == 2) {
+
+            StoreDto store = storeRepo.findByUserid(user.getId());
+            if (store != null) {
+                return reserRepo.findByStore(store);
+            }
+        }
+        return new ArrayList<>();
+    }
+
+    public ReservationDto getReservationById(Integer id) {
+        Optional<ReservationDto> reservationOpt = reserRepo.findById(id);
+        return reservationOpt.orElse(null);
     }
 
 
+    public void deleteReser(Integer id){
+        Optional<ReservationDto> reservationDto = reserRepo.findById(id);
+        reserRepo.deleteById(id);
+    }
+
+    public List<ReservationDto> getUserReservations(UserDto user) {
+
+        return reserRepo.findByUserId(user.getId());
+    }
 
 
 }
+
 
 

@@ -21,8 +21,8 @@
     <div th:if="${session.user.role == 3}">
         <a th:href="@{/master/masterlist/{role}(role=${session.user.role})}">관리자 목록</a>
     </div>
-    <div th:if="${session.user.role == 2 or session.user.role == 3}">
-        <a th:href="@{/masterreservation}">점주/관리자 예약확인</a>
+    <div>
+        <a th:href="@{/storereserlist}">점주/관리자 예약확인</a>
     </div>
 </div>
 

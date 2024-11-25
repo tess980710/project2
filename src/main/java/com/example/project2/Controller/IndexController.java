@@ -1,5 +1,6 @@
 package com.example.project2.Controller;
 
+import com.example.project2.dto.ReservationDto;
 import com.example.project2.dto.StoreDto;
 import com.example.project2.dto.UserDto;
 import com.example.project2.repo.UserRepo;
@@ -22,16 +23,12 @@ import java.util.List;
 public class IndexController {
 
     private final ReserService reserService;
-
     private final UserRepo userRepo;
-
     private final HttpSession session;
-
     private final MasterService masterService;
 
-
-    public String Index(Model model) { //메인페이지
-
+    // 메인 페이지
+    public String Index(Model model) {
         UserDto user = (UserDto) session.getAttribute("user");
         if (user != null) {
             model.addAttribute("userId", user.getId());
@@ -40,41 +37,39 @@ public class IndexController {
         return "Index";
     }
 
+    // 로그인 페이지 이동
     @GetMapping("login")
     public String Login() {
         return "reservation/login";
-    } //로그인 화면이동
+    }
 
-    @PostMapping("login") // 로그인실행
+    // 로그인 실행
+    @PostMapping("login")
     public String postLogin(@Validated @ModelAttribute UserDto dto) {
         boolean success = reserService.login(dto.getId(), dto.getPassword(), dto.getRole());
         if (success) {
             session.setAttribute("role", dto.getRole());
-
             return "redirect:/";
         } else {
             return "reservation/login";
         }
     }
 
-    @PostMapping("logout") //로그아웃
+    // 로그아웃
+    @PostMapping("logout")
     public String logout() {
         session.invalidate();
         return "redirect:/";
     }
 
-
-    @GetMapping("reservation") //본인 예약리스트확인
-    public String reservationList() {
-        return "reservation/reservation";
-    }
-
-    @GetMapping("masterreservation") //점주, 관리자 예약자 확인
+    // 점주/관리자 예약자 확인 페이지
+    @GetMapping("masterreservation")
     public String masterReservation() {
         return "masterReser";
     }
 
-    @GetMapping("storelist")//가게 모든 리스트
+    // 가게 목록 조회
+    @GetMapping("storelist")
     public String storeList(Model model) {
         Integer role = (Integer) session.getAttribute("role");
         model.addAttribute("role", role);
@@ -84,50 +79,53 @@ public class IndexController {
         return "reservation/storelist";
     }
 
-
-    @GetMapping("store/detail/{id}")//가게 상세정보
+    // 가게 상세 정보 조회
+    @GetMapping("store/detail/{id}")
     public String StoreDetail(@PathVariable("id") Integer id, Model model) {
         StoreDto storeDto = reserService.getItemById(id);
         model.addAttribute("store", storeDto);
         return "reservation/storedetail";
     }
-    @GetMapping("write")//가게 등록 페이지
-    public String StoreWrite(){
+
+    // 가게 등록 페이지 이동
+    @GetMapping("write")
+    public String StoreWrite() {
         return "reservation/write";
     }
 
-        @PostMapping("/write")//가게 등록 진행
-        public String postWrite( @ModelAttribute StoreDto storeDto, @RequestParam("file") MultipartFile file){
-            masterService.write(storeDto,file);
-           return "redirect:/storelist";
-        }
-    @PostMapping("/delete")//가게 삭제
-    public String detailDelete(@RequestParam("id") Integer id){
+    // 가게 등록
+    @PostMapping("/write")
+    public String postWrite(@ModelAttribute StoreDto storeDto, @RequestParam("file") MultipartFile file) {
+        masterService.write(storeDto, file);
+        return "redirect:/storelist";
+    }
+
+    // 가게 삭제
+    @PostMapping("/delete")
+    public String detailDelete(@RequestParam("id") Integer id) {
         reserService.deleteById(id);
         return "redirect:/storelist";
     }
 
-
-    @GetMapping("/modify/{id}")// 가게 수정페이지
+    // 가게 수정 페이지
+    @GetMapping("/modify/{id}")
     public String modifyDetail(@PathVariable("id") Integer id, Model model) {
         StoreDto storeDto = reserService.getItemById(id);
         model.addAttribute("store", storeDto);
         return "reservation/modify";
     }
 
-    @PostMapping("/modify")// 가게및 파일 삭제 후 수정진행
-    public String modifyStore(
-            @ModelAttribute StoreDto storeDto,
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("existingPhoto") String existingPhoto) throws IOException {
-
+    // 가게 수정
+    @PostMapping("/modify")
+    public String modifyStore(@ModelAttribute StoreDto storeDto,
+                              @RequestParam("file") MultipartFile file,
+                              @RequestParam("existingPhoto") String existingPhoto) throws IOException {
         reserService.modifyStore(storeDto, file, existingPhoto);
         return "redirect:/storelist";
     }
 
-
-
-    @GetMapping("/reservation/{id}")//예약 페이지 이동
+    // 예약 페이지 이동
+    @GetMapping("/reservation/{id}")
     public String showReservationPage(@PathVariable("id") Integer storeId, Model model, HttpSession session) {
         StoreDto store = reserService.getItemById(storeId);
         UserDto user = (UserDto) session.getAttribute("user");
@@ -136,21 +134,65 @@ public class IndexController {
         return "reservation/storeReser";
     }
 
-    @PostMapping("/reserve")//예약 진행
-    public String reserveStore(
-            @RequestParam("storeId") Integer storeId,
-            @RequestParam("date") String date,
-            HttpSession session) {
+    // 예약 진행
+    @PostMapping("/reserve")
+    public String reserveStore(@RequestParam("storeId") Integer storeId,
+                               @RequestParam("date") String date,
+                               HttpSession session) {
         UserDto user = (UserDto) session.getAttribute("user");
         if (user == null) {
             return "redirect:/login";
         }
         StoreDto store = reserService.getItemById(storeId);
         reserService.saveReservation(user, store, date);
-        return "redirect:/reservation/storeReser";
+        return "redirect:/storelist";
     }
 
+    // 예약 리스트 조회
+    @GetMapping("/storereserlist")
+    public String showReservationList(Model model, HttpSession session) {
+        UserDto user = (UserDto) session.getAttribute("user");
+        List<ReservationDto> reservationList = reserService.getReserList(session);
+        model.addAttribute("reservationList", reservationList);
+        return "reservation/storeReserList";
+    }
+
+    // 내 예약 조회
+    @GetMapping("/reservation")
+    public String getMyReservations(HttpSession session, Model model) {
+        UserDto loggedInUser = (UserDto) session.getAttribute("user");
+
+        if (loggedInUser != null) {
+            List<ReservationDto> reservations = reserService.getUserReservations(loggedInUser);
+            model.addAttribute("reservations", reservations);
+            return "reservation/Myreservation";
+        }
+
+        return "redirect:/login";
+    }
+
+    
+    //내 예약 상세 리스트
+    @GetMapping("/reservation/StoreDetailReser/{id}")
+    public String showReservationDetail(@PathVariable Integer id, Model model, HttpSession session) {
+
+        ReservationDto reservation = reserService.getReservationById(id);
+        UserDto user = (UserDto) session.getAttribute("user");
+
+
+        model.addAttribute("reservation", reservation);
+        model.addAttribute("user", user);
+
+        return "reservation/StoreDetailReser";
+    }
+    
+    //예약 취소
+    @PostMapping("/deleteReser")
+    public String deleteReser(@RequestParam("id") Integer id) {
+        reserService.deleteReser(id);
+        return "redirect:/reservation";
+    }
+
+
+
 }
-
-
-

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservation List</title>
+</head>
+<body>
+<h2>예약자 목록</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>예약자 아이디</th>
+        <th>예약자 이름</th>
+        <th>예약자 번호</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="reservation : ${reservationList}">
+        <td>
+            <a th:href="@{/reservation/StoreDetailReser/{id}(id=${reservation.id})}" th:text="${reservation.store.title}"></a>
+        </td>
+
+
+
+        <td th:text="${reservation.user.name}"></td>
+
+        <td th:text="${reservation.user.phonenum}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<div>
+    <a th:href="@{/}">메인페이지</a>
+</div>
+</body>
+</html>
