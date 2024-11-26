@@ -2,24 +2,27 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reservation Detail</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
-<h2>예약 상세</h2>
-<form th:action="@{/deleteReser}" method="post">
-  <!-- 예약 ID 전달 -->
-  <input type="hidden" name="id" th:value="${reservation.id}" />
-
-  <div>
-    <p><strong>예약자 아이디:</strong> <span th:text="${reservation.user.id}"></span></p>
-    <p><strong>예약자 이름:</strong> <span th:text="${reservation.user.name}"></span></p>
-    <p><strong>예약자 전화번호:</strong> <span th:text="${reservation.user.phonenum}"></span></p>
-    <p><strong>예약 날짜:</strong> <span th:text="${reservation.date}"></span></p>
-  </div>
-  <button type="submit">예약취소</button>
-  <div>
-    <a th:href="@{/storereserlist}">예약 목록으로 돌아가기</a>
-  </div>
-</form>
+<div th:insert="~{header::header}"></div>
+<div class="container mt-5">
+  <h2 class="mb-4">예약 상세</h2>
+  <form th:action="@{/deleteReser}" method="post" onsubmit="return confirm('예약취소를 진행하시겠습니까?')">
+    <input type="hidden" name="id" th:value="${reservation.id}" />
+    <div class="mb-3">
+      <p><strong>가계 이름:</strong> <span th:text="${reservation.user.id}"></span></p>
+      <p><strong>가계 번호:</strong> <span th:text="${reservation.user.name}"></span></p>
+      <p><strong>예약 날짜:</strong> <span th:text="${reservation.user.phonenum}"></span></p>
+    </div>
+    <button type="submit" class="btn btn-danger mb-3">예약 취소</button>
+    <div>
+      <a th:href="@{/storereserlist}" class="btn btn-secondary">예약 목록으로 돌아가기</a>
+    </div>
+  </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

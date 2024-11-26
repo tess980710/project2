@@ -2,6 +2,7 @@ package com.example.project2.Controller;
 
 import com.example.project2.dto.StoreDto;
 import com.example.project2.dto.UserDto;
+import com.example.project2.repo.MasterRepo;
 import com.example.project2.service.MasterService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -18,6 +20,8 @@ import java.util.List;
 @RequestMapping("/master")
 public class MasterController {
     private final MasterService masterService;
+
+    private final MasterRepo masterRepo;
 
     private final HttpSession session;
     @GetMapping
@@ -51,8 +55,30 @@ public class MasterController {
     }
 
 
+    @GetMapping("/master/update/{id}")
+    public String getMasterUpdate(@PathVariable("id") String id, Model model) {
+        try {
+            UserDto user = masterRepo.getUserById(id);
+            model.addAttribute("user", user);
+            return "masterUpdate";
+        } catch (Exception e) {
 
-
-
+            return "redirect:/master/list";
+        }
     }
+
+    @PostMapping("/master/update/{id}")
+    public String updateMaster(@PathVariable("id") String id, @ModelAttribute UserDto userDto, Model model) {
+        if (userDto.getId().equals(id)) {
+            model.addAttribute("msg", "본인은 수정이 불가능합니다");
+            return "reservation/masterlist";
+        }
+
+        masterService.MasterModify(userDto);
+        return "redirect:/master/list";
+    }
+
+
+
+}
 

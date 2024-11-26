@@ -123,24 +123,33 @@ public class ReserService {
         UserDto user = (UserDto) session.getAttribute("user");
 
         if (user == null) {
-
             return new ArrayList<>();
         }
 
-
         Integer role = user.getRole() != null ? user.getRole() : 0;
+        List<ReservationDto> reservations = new ArrayList<>();
 
         if (role == 3) {
+
             return reserRepo.findAll();
         } else if (role == 2) {
-
-            StoreDto store = storeRepo.findByUserid(user.getId());
-            if (store != null) {
-                return reserRepo.findByStore(store);
+            List<StoreDto> stores = storeRepo.findByUserid(user.getId());
+            if (stores != null && !stores.isEmpty()) {
+                for (StoreDto store : stores) {
+                    List<ReservationDto> storeReservations = reserRepo.findByStore(store);
+                    if (storeReservations != null && !storeReservations.isEmpty()) {
+                        reservations.addAll(storeReservations);
+                    }
+                }
             }
+            return reservations;
         }
+
         return new ArrayList<>();
     }
+
+
+
 
     public ReservationDto getReservationById(Integer id) {
         Optional<ReservationDto> reservationOpt = reserRepo.findById(id);

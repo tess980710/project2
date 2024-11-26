@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
@@ -81,11 +82,19 @@ public class IndexController {
 
     // 가게 상세 정보 조회
     @GetMapping("store/detail/{id}")
-    public String StoreDetail(@PathVariable("id") Integer id, Model model) {
+    public String StoreDetail(@PathVariable("id") Integer id, Model model, HttpSession session) {
         StoreDto storeDto = reserService.getItemById(id);
         model.addAttribute("store", storeDto);
+
+        UserDto currentUser = (UserDto) session.getAttribute("user");
+
+        if (currentUser != null) {
+            model.addAttribute("user", currentUser);
+        }
+
         return "reservation/storedetail";
     }
+
 
     // 가게 등록 페이지 이동
     @GetMapping("write")
@@ -185,14 +194,42 @@ public class IndexController {
 
         return "reservation/StoreDetailReser";
     }
-    
-    //예약 취소
+
     @PostMapping("/deleteReser")
-    public String deleteReser(@RequestParam("id") Integer id) {
-        reserService.deleteReser(id);
-        return "redirect:/reservation";
+    public String deleteReser(@RequestParam("id") Integer id, HttpSession session) {
+        UserDto loggedInUser = (UserDto) session.getAttribute("user");
+        if (loggedInUser != null && (loggedInUser.getRole() == 2 || loggedInUser.getRole() == 3)) {
+            reserService.deleteReser(id);
+            return "redirect:/storereserlist";
+        } else {
+            reserService.deleteReser(id);
+            return "redirect:/reservation";
+        }
     }
 
+    @PostMapping("/master/update")
+    public String updateRoles(
+            @RequestParam("id") List<String> id,
+            @RequestParam("role") List<Integer> role,
+            RedirectAttributes redirectAttributes) {
 
+        try {
+            for (int i = 0; i < id.size(); i++) {
+                UserDto user = new UserDto();
+                user.setId(id.get(i));
+                user.setRole(role.get(i));
+
+                masterService.MasterModify(user);
+            }
+
+            redirectAttributes.addFlashAttribute("message", "권한 수정이 완료되었습니다.");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", "권한 수정 중 오류가 발생했습니다.");
+        }
+
+        return "redirect:/";
+    }
 
 }

@@ -2,6 +2,7 @@ package com.example.project2.service;
 
 import com.example.project2.dto.StoreDto;
 import com.example.project2.dto.UserDto;
+import com.example.project2.repo.MasterRepo;
 import com.example.project2.repo.UserRepo;
 import com.example.project2.repo.StoreRepo;
 import jakarta.servlet.http.HttpSession;
@@ -24,6 +25,8 @@ public class MasterService {
     private final StoreRepo storeRepo;
     private final HttpSession session;
 
+    private final MasterRepo masterRepo;
+
     public String signUp(UserDto dto, String confirmPassword) {
         if (userRepo.existsById(dto.getId())) {
             return "1";
@@ -40,12 +43,6 @@ public class MasterService {
         return userRepo.findByRole(role);
     }
 
-    public void MasterModify(UserDto userDto) {
-        UserDto dto = (UserDto) session.getAttribute("user");
-
-        dto.setRole(userDto.getRole());
-        userRepo.save(dto);
-    }
 
     public void write(StoreDto storeDto,MultipartFile file) {
         String uploadDir = "C:\\practice\\project2\\src\\main\\resources\\static";
@@ -111,6 +108,28 @@ public class MasterService {
 
         storeRepo.save(storeDto);
     }
+
+    public UserDto getUserById(String id) {
+        return masterRepo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+    }
+
+    public void MasterModify(UserDto userDto) {
+        UserDto dto = (UserDto) session.getAttribute("user");
+
+        if (dto == null || dto.getId().equals(userDto.getId())) {
+            return;
+        }
+
+        UserDto existingUser = masterRepo.findById(userDto.getId())
+                .orElse(null);
+
+        if (existingUser != null) {
+            existingUser.setRole(userDto.getRole());
+            masterRepo.save(existingUser);
+        }
+    }
+
 
 }
 

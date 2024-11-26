@@ -11,8 +11,6 @@ public interface UserRepo extends JpaRepository<UserDto,Integer> {
 
     boolean existsById(String id);
 
+
     List<UserDto> findByRole(Integer role);
-
-
-
 }

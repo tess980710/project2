@@ -10,5 +10,5 @@ public interface StoreRepo extends JpaRepository<StoreDto, Integer> {
 
     void deleteById(Integer id);
 
-    StoreDto findByUserid(String id);
+    List<StoreDto> findByUserid(String id);
 }
