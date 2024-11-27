@@ -4,6 +4,7 @@ import com.example.project2.dto.ReservationDto;
 import com.example.project2.dto.StoreDto;
 import com.example.project2.dto.UserDto;
 import com.example.project2.repo.UserRepo;
+import com.example.project2.service.EmailService;
 import com.example.project2.service.MasterService;
 import com.example.project2.service.ReserService;
 import jakarta.servlet.http.HttpSession;
@@ -27,6 +28,8 @@ public class IndexController {
     private final UserRepo userRepo;
     private final HttpSession session;
     private final MasterService masterService;
+
+    private final EmailService emailService;
 
     // 메인 페이지
     public String Index(Model model) {
@@ -149,13 +152,18 @@ public class IndexController {
                                @RequestParam("date") String date,
                                HttpSession session) {
         UserDto user = (UserDto) session.getAttribute("user");
+
         if (user == null) {
             return "redirect:/login";
         }
+
         StoreDto store = reserService.getItemById(storeId);
+
         reserService.saveReservation(user, store, date);
+
         return "redirect:/storelist";
     }
+
 
     // 예약 리스트 조회
     @GetMapping("/storereserlist")

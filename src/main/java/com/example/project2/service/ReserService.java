@@ -6,8 +6,12 @@ import com.example.project2.dto.UserDto;
 import com.example.project2.repo.ReserRepo;
 import com.example.project2.repo.UserRepo;
 import com.example.project2.repo.StoreRepo;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,6 +31,9 @@ public class ReserService {
     private final ReserRepo reserRepo;
     private final StoreRepo storeRepo;
 
+    private final JavaMailSender mailSender;
+
+    private final EmailService emailService;
     public boolean login(String id, String password, Integer role) {
         Optional<UserDto> result = userRepo.findByIdAndPassword(id, password);
         if (result.isPresent()) {
@@ -116,8 +123,33 @@ public class ReserService {
         reservation.setPhone(Integer.valueOf(user.getPhonenum()));
 
         reserRepo.save(reservation);
+        sendReservationEmail(user,store,date);
 
     }
+
+    private void sendReservationEmail(UserDto user, StoreDto store, String date) {
+        try {
+            String to = "jbugh710@gmail.com";
+            String subject = "새로운 예약이 접수되었습니다.";
+
+            String content = """
+                안녕하세요. <br>
+                
+                새로운 예약이 접수되었습니다. <br><br>
+                
+                예약자: %s<br>
+                연락처: %s<br>
+                예약 날짜: %s<br>
+                가게: %s
+                """.formatted(user.getName(), user.getPhonenum(), date, store.getTitle());
+
+            emailService.sendEmail(to, subject, content);
+        } catch (MessagingException e) {
+
+            System.out.println("이메일 전송 중 오류 발생: " + e.getMessage());
+        }
+    }
+
 
     public List<ReservationDto> getReserList(HttpSession session) {
         UserDto user = (UserDto) session.getAttribute("user");
