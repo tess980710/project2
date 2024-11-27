@@ -174,6 +174,7 @@ public class IndexController {
         return "reservation/storeReserList";
     }
 
+
     // 내 예약 조회
     @GetMapping("/reservation")
     public String getMyReservations(HttpSession session, Model model) {
@@ -190,8 +191,22 @@ public class IndexController {
 
     
     //내 예약 상세 리스트
-    @GetMapping("/reservation/StoreDetailReser/{id}")
+    @GetMapping("/reservation/getDetailReser/{id}")
     public String showReservationDetail(@PathVariable Integer id, Model model, HttpSession session) {
+
+        ReservationDto reservation = reserService.getReservationById(id);
+        UserDto user = (UserDto) session.getAttribute("user");
+
+
+        model.addAttribute("reservation", reservation);
+        model.addAttribute("user", user);
+
+        return "reservation/getDetailReser";
+    }
+
+    //예약자 디테일 확인
+    @GetMapping("/reservation/StoreDetailReser/{id}")
+    public String showAllReservationDetail(@PathVariable Integer id, Model model, HttpSession session) {
 
         ReservationDto reservation = reserService.getReservationById(id);
         UserDto user = (UserDto) session.getAttribute("user");

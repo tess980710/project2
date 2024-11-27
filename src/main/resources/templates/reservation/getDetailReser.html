@@ -13,9 +13,9 @@
   <form th:action="@{/deleteReser}" method="post" onsubmit="return confirm('예약취소를 진행하시겠습니까?')">
     <input type="hidden" name="id" th:value="${reservation.id}" />
     <div class="mb-3">
-      <p><strong>가계 이름:</strong> <span th:text="${reservation.user.id}"></span></p>
-      <p><strong>가계 번호:</strong> <span th:text="${reservation.user.name}"></span></p>
-      <p><strong>예약 날짜:</strong> <span th:text="${reservation.user.phonenum}"></span></p>
+      <p><strong>가계 이름:</strong> <span th:text="${reservation.store.title}"></span></p>
+      <p><strong>가계 번호:</strong> <span th:text="${reservation.store.num}"></span></p>
+      <p><strong>예약 날짜:</strong> <span th:text="${reservation.date}"></span></p>
     </div>
     <button type="submit" class="btn btn-danger mb-3">예약 취소</button>
     <div>

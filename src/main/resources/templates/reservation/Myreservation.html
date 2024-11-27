@@ -23,7 +23,7 @@
         <tr th:each="reservation : ${reservations}">
             <td th:text="${reservation.id}"></td>
             <td>
-                <a th:href="@{/reservation/StoreDetailReser/{id}(id=${reservation.id})}" th:text="${reservation.store.title}"></a>
+                <a th:href="@{/reservation/getDetailReser/{id}(id=${reservation.id})}" th:text="${reservation.store.title}"></a>
             </td>
             <td th:text="${reservation.store.num}"></td>
             <td th:text="${reservation.date}"></td>
