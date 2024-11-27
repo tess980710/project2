@@ -12,7 +12,6 @@
 <div class="container mt-5">
     <h2 class="text-center mb-4">관리자 권한 수정</h2>
 
-
     <form th:action="@{/master/update}" method="post" onsubmit="return confirm('권한 수정하시겠습니까?')">
         <div class="table-responsive">
             <table class="table table-bordered">
@@ -33,9 +32,6 @@
                             <option th:value="2" th:text="'점주'" th:selected="${userStat.role == 2}"></option>
                             <option th:value="1" th:text="'일반회원'" th:selected="${userStat.role == 1}"></option>
                         </select>
-                        <div th:if="${msg}" class="alert alert-danger" role="alert">
-                            <p th:text="${msg}"></p>
-                        </div>
 
                     </td>
                     <td th:text="${userStat.id}"></td>

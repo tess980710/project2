@@ -55,30 +55,6 @@ public class MasterController {
     }
 
 
-    @GetMapping("/master/update/{id}")
-    public String getMasterUpdate(@PathVariable("id") String id, Model model) {
-        try {
-            UserDto user = masterRepo.getUserById(id);
-            model.addAttribute("user", user);
-            return "masterUpdate";
-        } catch (Exception e) {
-
-            return "redirect:/master/list";
-        }
-    }
-
-    @PostMapping("/master/update/{id}")
-    public String updateMaster(@PathVariable("id") String id, @ModelAttribute UserDto userDto, Model model) {
-        if (userDto.getId().equals(id)) {
-            model.addAttribute("msg", "본인은 수정이 불가능합니다");
-            return "reservation/masterlist";
-        }
-
-        masterService.MasterModify(userDto);
-        return "redirect:/master/list";
-    }
-
-
 
 }
 

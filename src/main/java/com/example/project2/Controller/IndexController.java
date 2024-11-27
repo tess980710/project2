@@ -49,15 +49,17 @@ public class IndexController {
 
     // 로그인 실행
     @PostMapping("login")
-    public String postLogin(@Validated @ModelAttribute UserDto dto) {
+    public String postLogin(@Validated @ModelAttribute UserDto dto, Model model) {
         boolean success = reserService.login(dto.getId(), dto.getPassword(), dto.getRole());
         if (success) {
             session.setAttribute("role", dto.getRole());
             return "redirect:/";
         } else {
+            model.addAttribute("errorMessage", "아이디 또는 비밀번호가 일치하지 않습니다.");
             return "reservation/login";
         }
     }
+
 
     // 로그아웃
     @PostMapping("logout")
@@ -245,13 +247,9 @@ public class IndexController {
                 masterService.MasterModify(user);
             }
 
-            redirectAttributes.addFlashAttribute("message", "권한 수정이 완료되었습니다.");
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("message", e.getMessage());
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message", "권한 수정 중 오류가 발생했습니다.");
         }
-
         return "redirect:/";
     }
 

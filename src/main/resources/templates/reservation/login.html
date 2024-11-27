@@ -11,6 +11,10 @@
 
 <div class="container mt-5">
     <h2 class="text-center mb-4">로그인</h2>
+
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <span th:text="${errorMessage}"></span>
+    </div>
     <form th:action="@{/login}" th:method="post" class="border p-4 rounded shadow-sm">
         <div class="mb-3">
             <label for="id" class="form-label">아이디</label>
