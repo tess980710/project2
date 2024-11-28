@@ -1,5 +1,6 @@
 package com.example.project2.service;
 
+import com.example.project2.dto.MailDto;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -24,4 +25,6 @@ public class EmailService {
         mailSender.send(message);
     }
 
+    public void sendEmail(MailDto mail) {
+    }
 }

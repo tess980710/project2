@@ -1,5 +1,6 @@
 package com.example.project2.Controller;
 
+import com.example.project2.dto.MailDto;
 import com.example.project2.dto.ReservationDto;
 import com.example.project2.dto.StoreDto;
 import com.example.project2.dto.UserDto;
@@ -7,6 +8,7 @@ import com.example.project2.repo.UserRepo;
 import com.example.project2.service.EmailService;
 import com.example.project2.service.MasterService;
 import com.example.project2.service.ReserService;
+import com.example.project2.service.SchedulerSendService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,8 @@ public class IndexController {
 
     private final EmailService emailService;
 
+    private final SchedulerSendService schedulerSendService;
+
     // 메인 페이지
     public String Index(Model model) {
         UserDto user = (UserDto) session.getAttribute("user");
@@ -53,12 +57,17 @@ public class IndexController {
         boolean success = reserService.login(dto.getId(), dto.getPassword(), dto.getRole());
         if (success) {
             session.setAttribute("role", dto.getRole());
+
+            schedulerSendService.loginSuccess();
+            schedulerSendService.sendLogin();
+
             return "redirect:/";
         } else {
             model.addAttribute("errorMessage", "아이디 또는 비밀번호가 일치하지 않습니다.");
             return "reservation/login";
         }
     }
+
 
 
     // 로그아웃
