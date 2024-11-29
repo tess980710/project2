@@ -30,7 +30,7 @@ public class SchedulerSendService {
             minute++;
         }
 
-        if (minute >= 5) {
+        if (minute >= 2) {
             isLogin = false;
         }
     }
@@ -40,8 +40,8 @@ public class SchedulerSendService {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-            helper.setFrom("jbugh710@gmail.com");
-            helper.setTo("jbugh710@naver.com");
+            helper.setFrom("your@email.com");
+            helper.setTo("your@email.com");
             helper.setSubject("로그인");
             helper.setText("로그인을 시도 하였습니다!"+true);
 
