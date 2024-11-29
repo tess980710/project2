@@ -55,3 +55,62 @@
 - 모든 식당 및 예약 내역을 확인하고 관리할 수 있습니다.
 - 회원 및 점주를 관리하고, 관리자 권한을 부여하거나 박탈할 수 있습니다.
 
+
+## DB 테이블 구조
+# User 테이블 구조
+
+
+| 번호 | 필드명     | 데이터 타입   | 인코딩              | NULL 허용 | 기본값 | 키      | 설명          |
+|------|------------|---------------|--------------------|-----------|--------|---------|---------------|
+| 1    | `id`       | `varchar(255)` | `utf8_general_ci` | 아니오     | 없음   | 기본 키 | 사용자 고유 ID |
+| 2    | `password` | `varchar(255)` | `utf8_general_ci` | 아니오     | 없음   |         | 비밀번호      |
+| 3    | `name`     | `varchar(255)` | `utf8_general_ci` | 아니오     | 없음   |         | 사용자 이름    |
+| 4    | `phonenum` | `varchar(255)` | `utf8_general_ci` | 예        | `NULL` |         | 전화번호       |
+| 5    | `role`     | `int(11)`      |                   | 예        | `NULL` |         | 사용자 역할    |
+| 6    | `email`    | `varchar(255)` | `utf8_general_ci` | 예        | `NULL` |         | 이메일 주소    |
+
+### 키 정보
+- **기본 키(Primary Key)**: `id`
+- **참조 키(Foreign Key)**: `id`
+
+# Store 테이블 구조
+
+
+| 번호 | 필드명         | 데이터 타입     | 인코딩             | NULL 허용 | 기본값   | 키                | 설명            
+|------|---------------|----------------|-------------------|-----------|----------|-------------------|
+| 1    | `id`          | `int(11)`      |                   | 아니오    | 없음      | 기본 키            | 가게 고유 ID     
+|      |               |                |                   |           |          | AUTO_INCREMENT |  |
+| 2    | `title`       | `varchar(255)` | `utf8_general_ci` | 아니오    | 없음      |                   | 가게 제목        
+| 3    | `description` | `varchar(255)` | `utf8_general_ci` | 아니오    | 없음      |                   | 가게 설명        
+| 4    | `photo`       | `varchar(255)` | `utf8_general_ci` | 아니오    | 없음      |                   | 가게 사진        
+| 5    | `num`         | `int(11)`      |                   | 아니오    | 없음      |                   | 가게 번호        
+| 6    | `createdtime` | `date`         |                   | 예        | `NULL`   |                   | 생성 시간        
+| 7    | `updatedtime` | `date`         |                   | 예        | `NULL`   |                   | 수정 시간        
+| 8    | `userid`      | `varchar(255)` | `utf8_general_ci` | 예        | `NULL`   | 참조 키           | 사용자 고유 ID    
+
+### 키 정보
+- **기본 키(Primary Key)**: `id`  
+  (자동 증가: `AUTO_INCREMENT`)
+- **참조 키(Foreign Key)**: `userid`  
+  (사용자 테이블의 `id` 필드를 참조)
+
+# Reservation 테이블 구조
+
+
+| 번호 | 필드명    | 데이터 타입    | 인코딩               | NULL 허용 | 기본값   | 키                | 설명             
+|------|-----------|----------------|-------------------|-----------|----------|------------------|
+| 1    | `id`      | `int(11)`      |                   | 아니오     | 없음     | 기본 키           | 예약 고유 ID      
+|      |           |                |                   |           |          | AUTO_INCREMENT | |
+| 2    | `name`    | `varchar(255)` | `utf8_general_ci` | 아니오     | 없음     |                  | 예약자 이름       
+| 3    | `phone`   | `int(11)`      |                   | 아니오     | 없음     |                  | 예약자 전화번호   
+| 4    | `date`    | `varchar(255)` | `utf8_general_ci` | 아니오     | 없음     |                  | 예약 날짜         
+| 5    | `storeid` | `int(11)`      |                   | 아니오     | 없음     | 참조 키           | 예약된 가게 ID    
+| 6    | `userid`  | `varchar(255)` | `utf8_general_ci` | 아니오     | 없음     | 참조 키           | 예약자 사용자 ID  
+
+### 키 정보
+- **기본 키(Primary Key)**: `id`  
+  (자동 증가: `AUTO_INCREMENT`)
+- **참조 키(Foreign Key)**:  
+  - `storeid`: 가게 테이블의 `id` 필드를 참조  
+  - `userid`: 사용자 테이블의 `id` 필드를 참조
+
