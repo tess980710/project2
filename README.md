@@ -122,7 +122,7 @@
 
 ## 일반회원
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/36ccac7a-ca48-49ef-9c36-559187a1a94c">
+  <img widh=""80%" src="https://github.com/user-attachments/assets/36ccac7a-ca48-49ef-9c36-559187a1a94c">
 </p> 
 
 ## 점주
