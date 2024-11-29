@@ -121,17 +121,13 @@
 # 역할별 기능(영상)
 
 ## 일반회원
-<p align="center">
-  <img widh=""80%" src="https://github.com/user-attachments/assets/36ccac7a-ca48-49ef-9c36-559187a1a94c">
-</p> 
+
+  <img src="https://github.com/user-attachments/assets/36ccac7a-ca48-49ef-9c36-559187a1a94c">
 
 ## 점주
-<p align="center">
+
   <img src="https://github.com/user-attachments/assets/d9b0c953-dc32-4b47-ac7e-738fc8c36639">
-</p> 
 
 ## 관리자
 
-<p align="center">
   <img src="https://github.com/user-attachments/assets/8b5ccde8-009a-4517-9d6d-4e02f024454a">
-</p> 
